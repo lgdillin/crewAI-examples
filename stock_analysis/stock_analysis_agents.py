@@ -6,7 +6,8 @@ from tools.search_tools import SearchTools
 from tools.sec_tools import SECTools
 
 from langchain.tools.yahoo_finance_news import YahooFinanceNewsTool
-
+import os
+os.environ["OPENAI_MODEL_NAME"]="gpt-3.5-turbo"
 class StockAnalysisAgents():
   def financial_analyst(self):
     return Agent(
