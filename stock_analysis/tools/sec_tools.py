@@ -45,7 +45,7 @@ class SECTools():
   def search_10k(data):
     """
     Useful to search information from the latest 10-K form for a
-    given stock.
+    given stock. Pay special attention to the 10-K form ITEM 7 and ITEM 7A.
     The input to this tool should be a pipe (|) separated text of
     length two, representing the stock ticker you are interested, what
     question you have from it.

@@ -1,49 +1,38 @@
 from crewai import Task
 from textwrap import dedent
 
-# class StockAnalysisTasks():
-#   def research(self, agent, company):
-#     return Task(description=dedent(f"""
-#         Collect and summarize recent news articles, press
-#         releases, and market analyses related to the stock and
-#         its industry.
-#         Pay special attention to any significant events, market
-#         sentiments, and analysts' opinions. Also include upcoming 
-#         events like earnings and others.
-  
-#         Your final answer MUST be a report that includes a
-#         comprehensive summary of the latest news, any notable
-#         shifts in market sentiment, and potential impacts on 
-#         the stock.
-#         Also make sure to return the stock ticker.
-        
-#         {self.__tip_section()}
-  
-#         Make sure to use the most recent data as possible.
-  
-#         Selected company by the customer: {company}
-#       """),
-#       agent=agent,
-#       expected_output="Detailed financial analysis output requirements"
-#   )
 class StockAnalysisTasks():
-    def research(self, agent, company):
-        return Task(
-            description=dedent(f"""
-                Collect and summarize recent news articles, press releases, and market analyses related to the stock and its industry.
-                Selected company by the customer: {company}
-            """),
-            agent=agent,
-            expected_output="A comprehensive summary report including significant events, market sentiments, and analyst opinions."
-        )
+  def research(self, agent, company):
+    return Task(description=dedent(f"""
+        Collect and summarize recent news articles, press
+        releases, and market analyses related to the stock and
+        its industry.
+        Pay special attention to any significant events, market
+        sentiments, and analysts' opinions. Also include upcoming 
+        events like earnings and others.
+  
+        Your final answer MUST be a report that includes a
+        comprehensive summary of the latest news, any notable
+        shifts in market sentiment, and potential impacts on 
+        the stock.
+        Also make sure to return the stock ticker.
+        
+        {self.__tip_section()}
+  
+        Make sure to use the most recent data as possible.
+  
+        Selected company by the customer: {company}
+      """),
+      agent=agent
+    )
     
   def financial_analysis(self, agent): 
     return Task(description=dedent(f"""
         Conduct a thorough analysis of the stock's financial
         health and market performance. 
         This includes examining key financial metrics such as
-        P/E ratio, PEG ratio, EPS growth, revenue trends, FCFF trends,
-        interst coverage ratio and debt-to-equity ratio. 
+        P/E ratio, EPS growth, revenue trends, and 
+        debt-to-equity ratio. 
         Also, analyze the stock's performance in comparison 
         to its industry peers and overall market trends.
 
@@ -55,9 +44,8 @@ class StockAnalysisTasks():
 
         Make sure to use the most recent data possible.
       """),
-      agent=agent,
-      expected_output="Detailed financial analysis output requirements"
-  )
+      agent=agent
+    )
 
   def filings_analysis(self, agent):
     return Task(description=dedent(f"""

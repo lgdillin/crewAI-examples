@@ -6,16 +6,15 @@ from tools.search_tools import SearchTools
 from tools.sec_tools import SECTools
 
 from langchain.tools.yahoo_finance_news import YahooFinanceNewsTool
-import os
-os.environ["OPENAI_MODEL_NAME"]="gpt-3.5-turbo"
+
 class StockAnalysisAgents():
   def financial_analyst(self):
     return Agent(
       role='The Best Financial Analyst',
-      goal="""Impress all customers with your financial data 
+      goal="""Impress all customers with your financial data, industry analysis, 
       and market trends analysis""",
       backstory="""The most seasoned financial analyst with 
-      lots of expertise in stock market analysis and investment
+      lots of expertise in stock fundimental analysis, industry analysis,stock market analysis and investment
       strategies that is working for a super important customer.""",
       verbose=True,
       tools=[

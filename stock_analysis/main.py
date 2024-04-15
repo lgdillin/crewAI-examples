@@ -53,8 +53,7 @@ class FinancialCrew:
         return result
 
 if __name__ == "__main__":
-    import os
-    os.environ["OPENAI_MODEL_NAME"]="gpt-3.5-turbo"
+
     
     print("## Welcome to Financial Analysis Crew")
     print('-------------------------------')

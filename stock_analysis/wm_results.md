@@ -44,7 +44,7 @@ Snippet: It doesn't get more reliable than top waste management stocks. Waste Ma
 -----------------
 
 Final Answer: 
-Stock Ticker: WM
+**Stock Ticker: WM**
 
 Recent News Articles and Market Analysis:
 1. Waste Management (WM) Shares Gain 30% in 6 Months: Here's How
@@ -607,11 +607,11 @@ solid investment choice for long-term growth potential.
 ########################
 ## Here is the Report
 ########################
-
+**
 After conducting a thorough analysis of Waste Management's stock performance and financial health, it is evident that Waste Management (WM) has shown strong growth over the past year, gaining 37.4%. This outperformance is supported by the company's 
 strategic focus on sustainability efforts, growth opportunities, and operational efficiencies. Additionally, Waste Management's consistent revenue growth, driven by higher yield in the collection and disposal business, acquisitions, and increased volumes, positions it as a reliable option for investors seeking long-term growth and profitability in the waste management sector.
 
 Considering Waste Management's impressive stock performance, consistent revenue growth, and strategic initiatives, I highly recommend buying Waste Management (WM) stock. The company's strong financial performance and strategic positioning make it a 
-solid investment choice for long-term growth potential.
+solid investment choice for long-term growth potential.**
 PS D:\crewAI\crewAI-examples\stock_analysis>
 

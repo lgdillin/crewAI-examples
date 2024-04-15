@@ -53,7 +53,7 @@ class StockAnalysisTasks:
             Conduct a thorough analysis of the stock's financial health and market performance.
             This includes examining key financial metrics such as P/E ratio, PEG ratio, EPS growth, revenue trends, and debt-to-equity ratios.
             Also, analyze the stock's performance in comparison to its industry peers and overall market trends.
-            Your final report MUST include a clear assessment of the stock's financial standing, its strengths and weaknesses, and how it fares against competitors in the current market scenario.
+            Your final report MUST include a clear assessment of the stock's recent performance,financial standing, ratios, trends of the ratios, its strengths and weaknesses, and how it fares against competitors in the current market scenario.
             {self.__tip_section()}
         """)
         expected_output = "Detailed report with analysis of financial metrics and market performance."
@@ -72,6 +72,7 @@ class StockAnalysisTasks:
         description = dedent(f"""
             Analyze the latest 10-Q and 10-K filings from EDGAR for the stock in question.
             Focus on key sections that provide insights into the company's financial health, market position, and future outlook.
+            Pay special attention to the 10-K form ITEM 7 and ITEM 7A.
             Your analysis should highlight important changes and developments in the company's financial statements and management discussion.
             {self.__tip_section()}
         """)
