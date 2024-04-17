@@ -94,6 +94,7 @@ class StockAnalysisTasks:
             Based on the comprehensive analysis of the stock, including market trends, financial health, and strategic positioning, provide a clear recommendation.
             Consider the current market conditions, the company's sector performance, and expected future developments.
             Your recommendation should clearly state whether to buy, hold, or sell the stock, supported by detailed reasoning.
+            Alway include the date of your recommendation, the stock ticker, last price and any other relevant information.
             {self.__tip_section()}
         """)
         expected_output = "A well-supported stock recommendation based on detailed analysis."
