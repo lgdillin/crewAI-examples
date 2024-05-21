@@ -3,14 +3,25 @@ import os
 import requests
 
 from langchain.tools import tool
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_openai import AzureOpenAIEmbeddings
+from llama_index.embeddings.ollama import OllamaEmbedding
 from langchain_community.vectorstores import FAISS
 
 from sec_api import QueryApi
 from unstructured.partition.html import partition_html
 
+from dotenv import load_dotenv
+load_dotenv()
+
+# Load the plugin
+from ollama_embed_plugin import OllamaPlugin
+from extract_10k import Preprocess10K
+
 class SECTools():
+  embeddings = OllamaPlugin().embeddings
+  use_extractor_api = True
+
   @tool("Search 10-Q form")
   def search_10q(data):
     """
@@ -38,7 +49,7 @@ class SECTools():
     if len(fillings) == 0:
       return "Sorry, I couldn't find any filling for this stock, check if the ticker is correct."
     link = fillings[0]['linkToFilingDetails']
-    answer = SECTools.__embedding_search(link, ask)
+    answer = SECTools.__embedding_search(link, ask, is_10k=False)
     return answer
 
   @tool("Search 10-K form")
@@ -68,25 +79,48 @@ class SECTools():
     if len(fillings) == 0:
       return "Sorry, I couldn't find any filling for this stock, check if the ticker is correct."
     link = fillings[0]['linkToFilingDetails']
-    answer = SECTools.__embedding_search(link, ask)
+    answer = SECTools.__embedding_search(link, ask, is_10k=True)
     return answer
 
-  def __embedding_search(url, ask):
-    text = SECTools.__download_form_html(url)
-    elements = partition_html(text=text)
-    content = "\n".join([str(el) for el in elements])
-    text_splitter = CharacterTextSplitter(
-        separator = "\n",
-        chunk_size = 1000,
+  def __embedding_search(url, ask, is_10k: bool):
+    if SECTools.use_extractor_api == True:
+      text = SECTools.__download_form_sec_api(url=url, is_10k=is_10k)
+      content = "\n".join([str(t) for t in text])
+    else:
+      text = SECTools.__download_form_html(url)
+      elements = partition_html(text=text)
+      content = "\n".join([str(el) for el in elements])
+
+    if is_10k == True:
+      print('10k', url)
+      Preprocess10K.capture_data(content, 'testdata/10_k.txt')
+    else:
+      print('10q', url)
+      Preprocess10K.capture_data(content, 'testdata/10q.txt')
+
+    ###############################################################
+    # Opt for the better performing RecursiveCharacterSplitter
+    text_splitter = RecursiveCharacterTextSplitter(
+        separators=['\n\n'],
+        chunk_size = 1200,
         chunk_overlap  = 150,
         length_function = len,
         is_separator_regex = False,
     )
+    ######################################################
+
+    #############################################################
+    # We need to load the OpenAI embeddings through our azure api
     docs = text_splitter.create_documents([content])
     retriever = FAISS.from_documents(
-      docs, OpenAIEmbeddings()
-    ).as_retriever()
-    answers = retriever.get_relevant_documents(ask, top_k=4)
+      docs, SECTools.embeddings
+    ).as_retriever(
+      search_type='mmr',
+    )
+
+    # .get_relevant_documents is deprecated
+    # answers = retriever.get_relevant_documents(ask, top_k=4)
+    answers = retriever.invoke(ask, top_k=4)
     answers = "\n\n".join([a.page_content for a in answers])
     return answers
 
@@ -110,3 +144,19 @@ class SECTools():
 
     response = requests.get(url, headers=headers)
     return response.text
+
+  def __download_form_sec_api(url, is_10k: bool):
+    if is_10k:
+      sections = ['1A', '7', '7A']
+    else:
+      sections = ['part1item1', 'part2item2']
+
+    # import extractor api
+    downloader = Preprocess10K(data_fmt_list=True)
+    downloader.extract(url=url, sections=sections)
+    downloader.clean_encoding()
+
+    if downloader.is_list == True:
+      return downloader.extracted_data_list
+    else:
+      return downloader.extracted_data

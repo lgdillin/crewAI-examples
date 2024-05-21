@@ -7,9 +7,16 @@ from tools.sec_tools import SECTools
 
 from langchain.tools.yahoo_finance_news import YahooFinanceNewsTool
 
+# include our custom azure wrapper
+from azure_plugin import AzurePlugin
+
 class StockAnalysisAgents():
+  def __init__(self):
+    self.llm = AzurePlugin().llm
+
   def financial_analyst(self):
     return Agent(
+      llm=self.llm,
       role='The Best Financial Analyst',
       goal="""Impress all customers with your financial data, industry analysis, 
       and market trends analysis""",
@@ -28,6 +35,7 @@ class StockAnalysisAgents():
 
   def research_analyst(self):
     return Agent(
+      llm=self.llm,
       role='Staff Research Analyst',
       goal="""Being the best at gather, interpret data and amaze
       your customer with it""",
@@ -48,6 +56,7 @@ class StockAnalysisAgents():
 
   def investment_advisor(self):
     return Agent(
+      llm=self.llm,
       role='Private Investment Advisor',
       goal="""Impress your customers with full analyses over stocks
       and completer investment recommendations""",
